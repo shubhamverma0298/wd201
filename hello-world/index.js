@@ -1,4 +1,4 @@
 const hello =()=>{
-    return "hello github.js! finaly submit!!";
+    console.log("hello github.js! finaly submit!!");
 };
 hello();
