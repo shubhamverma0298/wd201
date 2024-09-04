@@ -1,5 +1,8 @@
 const http = require("http");
 const fs = require("fs");
+const minimist = require('minimist');
+
+const args = minimist(process.argv.slice(2));
 
 let homeContent = "";
 let projectContent = "";
@@ -27,21 +30,22 @@ const server = http.createServer((request,response)=>{
   let url = request.url;
   response.writeHeader(200,{"Content-Type":"text/html"});
   switch(url){
-    case "/project":
-  response.write(projectContent);
-  response.end();
-  break;
     case "/registration":
-    response.write(registrationContent);
-    response.end();
-    break;
-  default:
-    response.write(homeContent);
-    response.end();
-    break;
+      response.write(registrationContent);
+      response.end();
+      break;
+    case "/project":
+     response.write(projectContent);
+     response.end();
+      break;
+    default:
+     response.write(homeContent);
+     response.end();
+     break;
   }
 });
-const PORT = 5000;
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+const port = parseInt(args.port);
+console.log(`Parsed port: ${port}`);
+server.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
