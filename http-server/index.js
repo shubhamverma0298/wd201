@@ -44,9 +44,9 @@ const server = http.createServer((request,response)=>{
      break;
   }
 });
-const port = parseInt(args.port); // for submission
-console.log(`Parsed port: ${port}`);
-// port = 5000;  // work in my desktop
+// const port = parseInt(args.port); // for submission
+// console.log(`Parsed port: ${port}`);
+port = 5000;  // work in my desktop
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
