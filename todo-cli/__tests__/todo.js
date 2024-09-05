@@ -8,7 +8,7 @@ describe("todolist Test suite", ()=>{
       add({
         title:"Test todo",
         completed: false,
-        dueDate: newDate().toLocaleDateString("en-CA")
+        dueDate: new Date().toLocaleDateString("en-CA")
       })
     });
     test("Should add new todo", ()=>{
