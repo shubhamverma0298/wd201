@@ -7,7 +7,7 @@ describe("todolist Test suite", ()=>{
     beforeAll(()=>{
       add({
         title:"Test todo",
-        completed: False,
+        completed: false,
         dueDate: new Date().toISOString().slice(0,10)
       });
     })
@@ -15,30 +15,30 @@ describe("todolist Test suite", ()=>{
       const todoItemCount = all.lenght;
       add({
         title:"Test todo",
-        completed: False,
+        completed: false,
         dueDate: new Date().toISOString().slice(0,10)
       });
       expect(all.lenght).toBe(todoItemCount+1);
     });
     test("should mark a todo as complete",()=>{
-      expect(all[0].completed).tobe(False);
+      expect(all[0].completed).tobe(false);
       markAsComplete(0);
-      expect(all[0].completed).toBe(True);
+      expect(all[0].completed).toBe(true);
     });
     test("should retrieval of overdue items",()=>{
-      expect(all[0].overdue).toBe(False);
+      expect(all[0].overdue).toBe(false);
       overdue(0);
-      expect(all[0].overdue).toBe(True)
+      expect(all[0].overdue).toBe(true)
     });
     test("should retrivel of due today items",()=>{
-      expect(all[0].dueToday).tobe(False);
+      expect(all[0].dueToday).tobe(false);
       dueToday(0);
-      expect(all[0].dueToday).toBe(True);
+      expect(all[0].dueToday).toBe(true);
     });
     test("should retrivel of due later items",()=>{
-      expect(all[0].dueLater).tobe(False);
+      expect(all[0].dueLater).tobe(false);
       dueLater(0);
-      expect(all[0].dueLater).toBe(True);
+      expect(all[0].dueLater).toBe(true);
     });
  })
 //  checks retrieval of overdue items.
