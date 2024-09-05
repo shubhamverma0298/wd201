@@ -23,21 +23,21 @@ const todoList = () => {
     const overdue = () => {
       // Write the date check condition here and return the array
       // of overdue items accordingly.
-      let date = new Date().toLocaleDateString("en-CA");
+      let date = newDate().toLocaleDateString("en-CA");
         return all.filter((item) => item.dueDate < date );
     }
   
     const dueToday = () => {
       // Write the date check condition here and return the array
       // of todo items that are due today accordingly.
-      let date = new Date().toLocaleDateString("en-CA");
+      let date = newDate().toLocaleDateString("en-CA");
         return all.filter((item) => item.dueDate === date );
     }
   
     const dueLater = () => {
       // Write the date check condition here and return the array
       // of todo items that are due later accordingly.
-      let date = new Date().toLocaleDateString("en-CA");
+      let date = newDate().toLocaleDateString("en-CA");
         return all.filter((item) => item.dueDate > date );
     }
   
