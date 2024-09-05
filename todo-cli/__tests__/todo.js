@@ -15,8 +15,8 @@ describe("todolist Test suite", ()=>{
       const todoItemCount = all.lenght;
       add({
         title:"Test todo",
+        dueDate: new Date().toLocaleDateString("en-CA"),
         completed: false,
-        dueDate: newDate().toLocaleDateString("en-CA")
       })
       expect(all.lenght).toBe(todoItemCount + 1);
     });
@@ -27,7 +27,7 @@ describe("todolist Test suite", ()=>{
     });
     test("should retrieval of overdue items",()=>{
       const overdueDateItems = overdue();
-      var prev_date = newDate();
+      var prev_date = new Date();
       prev_date.setDate(prev_date.getDate() - 1);
       let previous_date =prev_date.toLocaleDateString("en-CA");
       add({
@@ -40,7 +40,7 @@ describe("todolist Test suite", ()=>{
     });
     test("should retrivel of due today items",()=>{
       const itemsDueToday = dueToday();
-      var today_date = newDate();
+      var today_date = new Date();
       today_date.setDate(today_date.getDate());
       let today = today_date.toLocaleDateString("en-CA");
       add({
@@ -52,7 +52,7 @@ describe("todolist Test suite", ()=>{
     });
     test("should retrivel of due later items",()=>{
       const itemsDueLater = dueLater();
-      var later_date = newDate();
+      var later_date = new Date();
       later_date.setDate(later_date.getDate() + 1);
       let later = later_date.toLocaleDateString("en-CA");
       add({
