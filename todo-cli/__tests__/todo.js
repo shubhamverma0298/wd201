@@ -12,13 +12,13 @@ describe("todolist Test suite", ()=>{
       })
     });
     test("Should add new todo", ()=>{
-      const todoItemCount = all.lenght;
+      const todoItemCount = all.length;
       add({
         title:"Test todo",
         dueDate: new Date().toLocaleDateString("en-CA"),
         completed: false,
       })
-      expect(all.lenght).toBe(todoItemCount + 1);
+      expect(all.length).toBe(todoItemCount + 1);
     });
     test("should mark a todo as complete",()=>{
       expect(all[0].completed).toBe(false);
@@ -35,7 +35,7 @@ describe("todolist Test suite", ()=>{
         dueDate:previous_date,
         completed:false,
       })
-      expect(overdue().lenght).toBe(overdueDateItems.lenght +1 );
+      expect(overdue().length).toBe(overdueDateItems.length +1 );
 
     });
     test("should retrivel of due today items",()=>{
@@ -48,7 +48,7 @@ describe("todolist Test suite", ()=>{
         dueDate:today,
         completed:false,
       })
-      expect(dueToday().lenght).toBe(itemsDueToday.lenght + 1);
+      expect(dueToday().length).toBe(itemsDueToday.length + 1);
     });
     test("should retrivel of due later items",()=>{
       const itemsDueLater = dueLater();
@@ -60,7 +60,7 @@ describe("todolist Test suite", ()=>{
         dueDate:later,
         completed:false,
       })
-      expect(dueLater().lenght).toBe(itemsDueLater.lenght + 1);
+      expect(dueLater().length).toBe(itemsDueLater.length + 1);
     });
  })
 //  checks retrieval of overdue items.
