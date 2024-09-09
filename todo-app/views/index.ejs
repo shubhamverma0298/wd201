@@ -9,10 +9,7 @@
 <body>
     <h1 style="text-align: center;">Todo Home page</h1>
     <%- include('header.ejs') %>
-    <table>
-        <%for(var i=0; i<allTodos.lenght;i++ ){ %>
-        <tr><td><%= allTodos[i].title %></td></tr>
-        <%} %>
-    </table>
+    <%- include('footers.ejs') %>
+    <%- include('todos.ejs') %>
 </body>
 </html>
