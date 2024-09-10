@@ -22,7 +22,7 @@
                     <input type="date" class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm  leading-4"/>
                 </div>
                 </div>
-                <div class="flex-auto">
+                <div class="flex-none">
                 <button type="submit" class="bg-green-600 text-white px-5 px-2 rounded py-1 font-medium mr-2 mb-2"> Add</button>
                 </div>
             </form>
@@ -52,7 +52,7 @@
                 <h5>DueLater</h5>
             </div> -->
         <div>
-            <h2>Overdue</h2>
+            <h5>Overdue</h5>
             <span id="count-overdue">
                 <%= overdue.length %>
             </span> <!-- Count of overdue todos -->
@@ -60,7 +60,7 @@
         </div>
 
         <div>
-            <h2>Due Today</h2>
+            <h5>Due Today</h5>
             <span id="count-due-today">
                 <%= dueToday.length %>
             </span> <!-- Count of due today todos -->
@@ -68,7 +68,7 @@
         </div>
 
         <div>
-            <h2>Due Later</h2>
+            <h5>Due Later</h5>
             <span id="count-due-later">
                 <%= dueLater.length %>
             </span> <!-- Count of due later todos -->
