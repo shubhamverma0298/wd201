@@ -9,6 +9,28 @@ app.use(bodyParser.json());
 
 app.set("view engine","ejs");
 
+app.get('/', async (request, response) => {
+    const allTodos = await Todo.getTodos();
+    const overdue = await Todo.overdue();
+    const dueToday = await Todo.dueToday();
+    const dueLater = await Todo.dueLater();
+    if (request.accepts("html")) {
+      response.render("index", {
+        title: "Todo application",
+        overdue,
+        dueToday,
+        dueLater,
+        allTodos,
+        // csrfToken: request.csrfToken(),
+      })
+    } else {
+      response.json({
+        overdue,
+        dueToday,
+        dueLater,
+      })
+      } });
+
 app.get("/", async (request,response) =>{
     const allTodos = await Todo.getTodos();
     try{if (request.accepts("html")){
