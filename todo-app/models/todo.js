@@ -1,6 +1,5 @@
-import { Op } from '@sequelize/core';
-
 'use strict';
+const { Op } = require('sequelize');
 const {
   Model
 } = require('sequelize');
@@ -28,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll({
         where: {
           dueDate: {
-            [sequelize.Op.lt]: today,
+            [Op.lt]: today,
           },
           completed: false,
         },
@@ -50,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll({
         where: {
           dueDate: {
-            [sequelize.Op.gt]: today,
+            [Op.gt]: today,
           },
           completed: false,
         },
