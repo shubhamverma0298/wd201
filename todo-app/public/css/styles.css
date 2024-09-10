@@ -4,5 +4,5 @@ body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .Todo-Item:hover .trash-icon{
-    display-:block;
+    display:block;
 }
