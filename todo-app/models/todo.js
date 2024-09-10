@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll({
         where: {
           dueDate: {
-            [Sequelize.Op.lt]: today,
+            [sequelize.Op.lt]: today,
           },
           completed: false,
         },
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll({
         where: {
           dueDate: {
-            [Sequelize.Op.gt]: today,
+            [sequelize.Op.gt]: today,
           },
           completed: false,
         },
