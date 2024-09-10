@@ -21,6 +21,33 @@ module.exports = (sequelize, DataTypes) => {
     static getTodos(){
       return this.findAll();
     }
+    static async overdue () {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.lt]: new Date(),
+          },
+       },
+      });
+    }
+    static async dueToday () {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.eq]: new Date(),
+          },
+       },
+      });
+    }
+    static async dueLater () {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.gt]: new Date(),
+          },
+       },
+      });
+    }
   }
   Todo.init({
     title: DataTypes.STRING,
