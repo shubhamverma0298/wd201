@@ -21,31 +21,37 @@ module.exports = (sequelize, DataTypes) => {
     static getTodos(){
       return this.findAll();
     }
-    static async overdue () {
+    static async overdue() {
+      const today = new Date();
       return this.findAll({
         where: {
           dueDate: {
-            [Op.lt]: new Date(),
+            [Sequelize.Op.lt]: today,
           },
-       },
+          completed: false,
+        },
       });
     }
-    static async dueToday () {
+    static async dueToday() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       return this.findAll({
         where: {
-          dueDate: {
-            [Op.eq]: new Date(),
-          },
-       },
+          dueDate: today,
+          completed: false,
+        },
       });
     }
-    static async dueLater () {
+    static async dueLater() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       return this.findAll({
         where: {
           dueDate: {
-            [Op.gt]: new Date(),
+            [Sequelize.Op.gt]: today,
           },
-       },
+          completed: false,
+        },
       });
     }
   }
