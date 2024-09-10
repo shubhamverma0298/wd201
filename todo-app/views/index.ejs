@@ -22,10 +22,27 @@
                     <input type="date" class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm  leading-4"/>
                 </div>
                 </div>
-                <div class="flex-none">
+                <div class="flex-auto">
                 <button type="submit" class="bg-green-600 text-white px-5 px-2 rounded py-1 font-medium mr-2 mb-2"> Add</button>
                 </div>
             </form>
+            <div>
+                <h5>Overdue</h5>
+                <ul class="list-none">
+                    <li>
+                        <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-100">
+                            <input id="todo-checkbox-1" type="checkbox" class="w-4 h-4 text-color-blue-600 bg-grey-100 rounded border-grey-300">
+                            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer">Have to pay electricity bill </label>
+                        </div>
+                    </li>
+                    <li><div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-100">
+                        <input id="todo-checkbox-2" type="checkbox" class="w-4 h-4 text-color-blue-600 bg-grey-100 rounded border-grey-300">
+                        <label for="todo-checkbox-2" class="ml-2 text-sm text-gray-600 cursor-pointer">Have to pay mobile bill </label>
+                    </div></li>
+                </ul>
+                <h5>DueToday</h5>
+                <h5>DueLater</h5>
+            </div>
         </div>
     </div>
    
