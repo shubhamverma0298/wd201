@@ -26,7 +26,7 @@
                 <button type="submit" class="bg-green-600 text-white px-5 px-2 rounded py-1 font-medium mr-2 mb-2"> Add</button>
                 </div>
             </form>
-            <div>
+            <!-- <div>
                 <h5>Overdue</h5>
                 <ul class="list-none">
                     <li class="Todo-Item">
@@ -50,7 +50,30 @@
                 <ul class="list-none"></ul>
                 <li class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-blue-100 "></li>
                 <h5>DueLater</h5>
-            </div>
+            </div> -->
+        <div>
+            <h2>Overdue</h2>
+            <span id="count-overdue">
+                <%= overdue.length %>
+            </span> <!-- Count of overdue todos -->
+            <%- include('todos.ejs', { title: "Overdue" , data: overdue }) %>
+        </div>
+
+        <div>
+            <h2>Due Today</h2>
+            <span id="count-due-today">
+                <%= dueToday.length %>
+            </span> <!-- Count of due today todos -->
+            <%- include('todos.ejs', { title: "Due Today" , data: dueToday }) %>
+        </div>
+
+        <div>
+            <h2>Due Later</h2>
+            <span id="count-due-later">
+                <%= dueLater.length %>
+            </span> <!-- Count of due later todos -->
+            <%- include('todos.ejs', { title: "Due Later" , data: dueLater }) %>
+        </div>
         </div>
     </div>
    
