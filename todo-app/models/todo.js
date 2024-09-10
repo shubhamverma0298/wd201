@@ -1,3 +1,5 @@
+import { Op } from '@sequelize/core';
+
 'use strict';
 const {
   Model
