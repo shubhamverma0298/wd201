@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    static async completed(id) {
+    static async completed() {
       return this.findAll({
         where: {
           completed: true,
