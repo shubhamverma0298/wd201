@@ -86,7 +86,7 @@
             <span id="count-completed">
                 <%= completed.length %>
             </span> 
-            <%- include('todos.ejs', { title: "Completed Items"}) %>
+            <%- include('todos.ejs', { title: "Completed Items" , data: completed}) %>
         </div>
     </div>
     <%- include('footer.ejs') %> 
