@@ -26,6 +26,7 @@ app.get('/', async (request, response) => {
     const overdue = await Todo.overdue();
     const dueToday = await Todo.dueToday();
     const dueLater = await Todo.dueLater();
+    const completed = await Todo.completed();
     if (request.accepts("html")) {
       response.render("index", {
         title: "Todo application",
@@ -33,6 +34,7 @@ app.get('/', async (request, response) => {
         dueToday,
         dueLater,
         allTodos,
+        completed,
         csrfToken: request.csrfToken(),
       })
     } else {
@@ -40,6 +42,7 @@ app.get('/', async (request, response) => {
         overdue,
         dueToday,
         dueLater,
+        completed,
       })
       } });
 
