@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -e js,ejs",
-    "start:prod":"node index.js",
+    "start:prod": "node index.js",
     "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create",
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "prepare": "cd .. && husky install todo-app/.husky"
@@ -13,11 +13,14 @@
   "author": "shubham verma",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "pg": "^8.12.0"
+    "pg": "^8.12.0",
+    "tiny-csrf": "^1.1.4"
   },
   "devDependencies": {
+    "cheerio": "^1.0.0",
     "husky": "^9.1.5",
     "jest": "^29.7.0",
     "node_env": "^0.0.3",

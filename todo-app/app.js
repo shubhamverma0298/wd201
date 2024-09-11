@@ -1,13 +1,19 @@
 const {request,response}= require('express')
 const express = require('express');
+var csrf = require("tiny-csrf");
+
 const app = express();
-const {Todo}= require("./models")
-const bodyParser = require('body-parser')
+const {Todo}= require("./models");
+const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 const path = require("path");
 const { title } = require("process");
 
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser("shh! some secret string"))
+app.use(csrf('this_should_be_32_character_long',["POST","PUT","DELETE"]));
 
 app.set("view engine","ejs");
 
@@ -23,7 +29,7 @@ app.get('/', async (request, response) => {
         dueToday,
         dueLater,
         allTodos,
-        // csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
       })
     } else {
       response.json({
