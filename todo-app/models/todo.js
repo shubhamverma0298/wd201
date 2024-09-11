@@ -62,6 +62,17 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+    static async completed(id) {
+      return this.findAll({
+        where: {
+          completed: true,
+          id,
+        },
+      });
+    }
+    setCompletionStatus() {
+      return this.update({ completed: !this.completed });
+    }
   }
   Todo.init({
     title: DataTypes.STRING,
