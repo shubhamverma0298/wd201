@@ -23,7 +23,7 @@ app.get('/', async (request, response) => {
         dueToday,
         dueLater,
         allTodos,
-        csrfToken: request.csrfToken(),
+        // csrfToken: request.csrfToken(),
       })
     } else {
       response.json({
