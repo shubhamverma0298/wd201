@@ -7,6 +7,7 @@ const path = require("path");
 const { title } = require("process");
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
 
 app.set("view engine","ejs");
 
@@ -57,8 +58,8 @@ app.get("/todos", async (request,response)=>{
 app.post("/todos",async(request,response)=>{
     console.log("Creating a todo",request.body);
     try{
-    const todo =await Todo.addTodo({title: request.body.title, dueDate: request.body.dueDate , completed: false});
-    return response.json(todo);
+    await Todo.addTodo({title: request.body.title, dueDate: request.body.dueDate , completed: false});
+    return response.redirect("/");
     }catch(error){
         console.error(error);
         return response.status(422).json(error);
@@ -82,12 +83,12 @@ app.delete("/todos/:id", async function (request, response) {
       return response.status(400).send(false); // Return false if the ID is not a valid number
      }
     try {
-      const todo = await Todo.findByPk(todoId);
-      if (!todo) {
-        return response.send(false);
-      }
-      await todo.destroy();
-      return response.send(true);
+      await Todo.remove(request.params.id);
+      // if (!todo) {
+      //   return response.send(false);
+      // }
+      // await todo.destroy();
+      return response.json({success: true});
     } catch (error) {
         console.log(error);
       return response.status(422).json(error);

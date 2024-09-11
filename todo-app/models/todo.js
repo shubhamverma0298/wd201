@@ -55,6 +55,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+    static async remove(id){
+      return this.destroy({
+        where:{
+          id,
+        },
+      });
+    }
   }
   Todo.init({
     title: DataTypes.STRING,
