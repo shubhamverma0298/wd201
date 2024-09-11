@@ -12,6 +12,7 @@ const { title } = require("process");
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname,'public')));
 app.use(cookieParser("shh! some secret string"))
 app.use(csrf('this_should_be_32_character_long',["POST","PUT","DELETE"]));
 app.use((err, req, res, next) => {
@@ -46,28 +47,26 @@ app.get('/', async (request, response) => {
       })
       } });
 
-app.get("/", async (request,response) =>{
-    const allTodos = await Todo.getTodos();
-    try{if (request.accepts("html")){
-        response.render('index',{allTodos});
-     }else{response.json({allTodos})}
-    }catch(error){
-        response.error(error);
-    };
-});
+// app.get("/", async (request,response) =>{
+//     const allTodos = await Todo.getTodos();
+//     try{if (request.accepts("html")){
+//         response.render('index',{allTodos});
+//      }else{response.json({allTodos})}
+//     }catch(error){
+//         response.error(error);
+//     };
+// });
 
-app.use(express.static(path.join(__dirname,'public')));
-
-app.get("/todos", async (request,response)=>{
-    console.log("Todo list")
-    try{
-        const todo = await Todo.findAll();
-    return response.json(todo);
-    }catch(error){
-        console.error(error);
-        return response.status(422).json(error);  
-    }
-});
+// app.get("/todos", async (request,response)=>{
+//     console.log("Todo list")
+//     try{
+//         const todo = await Todo.findAll();
+//     return response.json(todo);
+//     }catch(error){
+//         console.error(error);
+//         return response.status(422).json(error);  
+//     }
+// });
 app.post("/todos",async(request,response)=>{
     console.log("Creating a todo",request.body);
     try{
