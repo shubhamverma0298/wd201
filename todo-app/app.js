@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser("shh! some secret string"))
 app.use(csrf('this_should_be_32_character_long',["POST","PUT","DELETE"]));
+app.use((err, req, res, next) => {
+  if (err.code !== "EBADCSRFTOKEN") return next(err);
+  res.status(403).json({ error: "Invalid CSRF token" });
+});
 
 app.set("view engine","ejs");
 
@@ -71,7 +75,7 @@ app.post("/todos",async(request,response)=>{
         return response.status(422).json(error);
     }
 });
-app.put("/todos/:id/markAsCompleted",async ( request,response)=>{
+app.put("/todos/:id",async ( request,response)=>{
     console.log("We have to update a todo with ID:",request.params.id);
     const todo = await Todo.findByPk(request.params.id);
     try{

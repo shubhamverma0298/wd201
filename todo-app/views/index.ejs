@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="<%= csrfToken %>">
+    <meta name="csrf-token" content="<%= csrfToken %>"/>
     <title>To-Do Manager</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,7 @@
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({
                     completed: !status,
-                    "_csrf": token
+                    _csrf: token
                 }),
             })
             .then((res)=>{
@@ -32,7 +32,7 @@
                 method:"delete",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({
-                    "_csrf": token
+                    _csrf: token,
                 }),
             })
             then((res)=>{
@@ -82,6 +82,11 @@
                 <%= dueLater.length %>
             </span> <!-- Count of due later todos -->
             <%- include('todos.ejs', { title: "Due Later" , data: dueLater }) %>
+            <h5>Completed Items</h5>
+            <span id="count-completed">
+                <%= completed.length %>
+            </span> <!-- Count of completed todos -->
+            <%- include('todos.ejs', { title: "Completed Items"}) %>
         </div>
         </div>
     </div>
