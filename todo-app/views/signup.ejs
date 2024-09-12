@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/>
+    <title>Sign-up</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <div class="grid grid-cols-4">
+            <div class="col-start-2 col-span-1">
+                <%- include('header.ejs') %>
+                <h6 class="py-4">signup as a new user</h6>
+                <form action="/users" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="py-4">
+                        <label for="firstName">FirstName:</label>
+                        <input type="text" name="firstName" placeholder=" first name"    class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm " required>
+                    </div>
+                    <div class="py-4">
+                        <label for="lastName">LastName:</label>
+                        <input type="text" name="lastName" placeholder=" last name"    class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm " required>
+                    </div>
+                    <div class="py-4">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" placeholder=" email"    class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm " required>
+                    </div>
+                    <div class="py-4">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" placeholder="password"    class="border border-grey-300 rounded text-grey-900 w-full p-2 text-sm " required>
+                    </div>
+                    <div class="py-4">
+                        <button type="submit" class="bg-green-600 text-white px-5 px-2 rounded py-1 font-medium mr-2 mb-2">Sign up</button>
+                    </div>       
+                </form>
+    </body>
+</html>
