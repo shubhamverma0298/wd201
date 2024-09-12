@@ -10,6 +10,20 @@
 </head>
 <body>
     <!-- <h1 style="text-align: center;">Todo Home page</h1> -->
+    <% if (messages && messages.success && messages.success.length > 0) { %>
+        <% messages.success.forEach(function(message) { %>
+            <div class="alert alert-success">
+                <%= message %>
+            </div>
+        <% }); %>
+    <% } %>
+    <% if (messages && messages.error && messages.error.length > 0) { %>
+        <% messages.error.forEach(function(message) { %>
+            <div class="alert alert-error">
+                <%= message %>
+            </div>
+        <% }); %>
+    <% } %>
     <div class="grid grid-cols-4">
         <div class="col-start-2 col-span-1">
             <%- include('header.ejs') %>

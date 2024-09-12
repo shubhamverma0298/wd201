@@ -15,37 +15,40 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'userId'
       })
     }
-    static addTodo({title,dueDate}){
-      return this.create({title: title,dueDate:dueDate,completed: false});
+    static addTodo({title,dueDate,userId}){
+      return this.create({title: title,dueDate:dueDate,completed: false,userId});
     }
     markAsCompleted(){
       return this.update({completed: true});
     }
-    static getTodos(){
+    static getTodos(userId){
+       userId;
       return this.findAll();
     }
-    static async overdue() {
+    static async overdue(userId) {
       const today = new Date();
       return this.findAll({
         where: {
           dueDate: {
             [Op.lt]: today,
           },
+          userId,
           completed: false,
         },
       });
     }
-    static async dueToday() {
+    static async dueToday(userId) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       return this.findAll({
         where: {
+          userId,
           dueDate: today,
           completed: false,
         },
       });
     }
-    static async dueLater() {
+    static async dueLater(userId) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       return this.findAll({
@@ -53,20 +56,23 @@ module.exports = (sequelize, DataTypes) => {
           dueDate: {
             [Op.gt]: today,
           },
+          userId,
           completed: false,
         },
       });
     }
-    static async remove(id){
+    static async remove(id, userId){
       return this.destroy({
         where:{
           id,
+          userId,
         },
       });
     }
-    static async completed() {
+    static async completed(userId) {
       return this.findAll({
         where: {
+          userId,
           completed: true,
         },
       });
@@ -76,7 +82,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Todo.init({
-    title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
+    },
     dueDate: DataTypes.DATEONLY,
     completed: DataTypes.BOOLEAN
   }, {
