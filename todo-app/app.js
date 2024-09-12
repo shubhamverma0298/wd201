@@ -204,19 +204,36 @@ app.get("/test-flash", (req, res) => {
   req.flash("success", "Flash message test!");
   res.redirect("/todos");
 });
-app.put("/todos/:id",connectEnsureLogin.ensureLoggedIn(),async ( request,response)=>{
-    console.log("We have to update a todo with ID:",request.params.id);
+app.get(
+  "/todos/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (request, response) {
     try {
       const todo = await Todo.findByPk(request.params.id);
       if (!todo) {
         return response.status(404).json({ message: "Todo not found" });
       }
-    return response.json(updatedTodo);
-    }catch(error){
-        console.error(error);
-        return response.status(422).json(error);
+      return response.json(todo);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
     }
-});
+  },
+);
+app.put(
+  "/todos/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (request, response) {
+    const todo = await Todo.findByPk(request.params.id);
+    try {
+      const updatedTodo = await todo.setCompletionStatus();
+      return response.json(updatedTodo);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
+  },
+);
 app.delete("/todos/:id",connectEnsureLogin.ensureLoggedIn(), async function (request, response) {
     console.log("We have to delete a Todo with ID: ", request.params.id);
     try {
