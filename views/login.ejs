@@ -13,6 +13,7 @@
             <div class="col-start-2 col-span-1">
                 <%- include('header.ejs') %>
                 <h6 class="py-4">login as a existing user</h6>
+                <p class="py-4 text-lg border-b-2 mb-1">Not have account? <a href="/signup" class="text-green-600 font-semibold hover:underline">Sign-up</a></p>
                 <form action="/session" method="post">
                     <%- include('notifications.ejs') %>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">

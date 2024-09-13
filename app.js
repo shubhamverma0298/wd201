@@ -13,7 +13,7 @@ const path = require("path");
 const saltRounds = 10;
 
 const app = express();
-const {Todo,User}= require("./models");
+const {User}= require("./models");
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 const { title } = require("process");
@@ -81,76 +81,30 @@ app.use((err, req, res, next) => {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine","ejs");
 
-app.get("/", async (request, response) => {
-  console.log("Authenticated:", request.isAuthenticated());
-  if (request.isAuthenticated()) {
-    response.redirect("/todos");
+app.get("/", async (request, response) => {if (request.isAuthenticated()) {
+  if (request.user.role == "teacher") {
+    return response.redirect("/teacher-dashboard");
   } else {
-    response.render("index", {
-      title: "Todo Application",
+    return response.redirect("/student-dashboard");
+  }
+}response.render("index", {
+      title: "Learners-Management-System",
       csrfToken: request.csrfToken(),
     });
-  }
 });
 
-app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
-  const loggedInUser = request.user.id;
-  const allTodos = await Todo.getTodos(loggedInUser);
-  const overdue = await Todo.overdue(loggedInUser);
-  const dueToday = await Todo.dueToday(loggedInUser);
-  const dueLater = await Todo.dueLater(loggedInUser);
-  const completed = await Todo.completed(loggedInUser);
-  if (request.accepts("html")) {
-    response.render("todos", {
-      title: "Todo application",
-      overdue,
-      dueToday,
-      dueLater,
-      allTodos,
-      completed,
-      messages: request.flash(),
-      csrfToken: request.csrfToken(),
-    })
-  } else {
-    response.json({
-      overdue,
-      dueToday,
-      dueLater,
-      completed,
-    })
-    } });
-// app.get("/", async (request,response) =>{
-//     const allTodos = await Todo.getTodos();
-//     try{if (request.accepts("html")){
-//         response.render('index',{allTodos});
-//      }else{response.json({allTodos})}
-//     }catch(error){
-//         response.error(error);
-//     };
-// });
-
-// app.get("/todos", async (request,response)=>{
-//     console.log("Todo list")
-//     try{
-//         const todo = await Todo.findAll();
-//     return response.json(todo);
-//     }catch(error){
-//         console.error(error);
-//         return response.status(422).json(error);  
-//     }
-// });
 app.get("/signup",(request,response)=>{
   response.render("signup", {csrfToken: request.csrfToken()})
 })
-
-app.post("/users", async(request,response)=>{
+app.post("/usersentry", async(request,response)=>{
   const hashedPwd =  await bcrypt.hash(request.body.password, saltRounds)
   console.log(hashedPwd)
   try{
     if (request.body.password === "") {
       throw new Error("Validation notEmpty on password failed");
     }
-      const user = await User.create({
+      const user = await Userentry.create({
+      role: request.body.role,
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
@@ -160,10 +114,16 @@ app.post("/users", async(request,response)=>{
       if(err){
         console.log(err)
         request.flash("error", "Login Failed");
+      if (user.role === "teacher") {
+        response.redirect("/teacher-dashboard");
+      } else if (user.role === "student") {
+        response.redirect("/student-dashboard");
+      } else {
+        request.flash("success", "Signup Success");
+        response.redirect("/signup");
       }
-      request.flash("success", "Signup Success");
-      response.redirect("/todos");
-    })
+    }
+    });
   }catch(error){
     console.error("User creation error:", error);
     if (error.name === "SequelizeValidationError") {
@@ -181,74 +141,25 @@ app.get("/login",async(request,response)=>{
 });
 app.post("/session",passport.authenticate('local',{ failureRedirect:"/login"}), async(request,response)=>{
   console.log(request.user);
-  response.redirect("/todos");
+  if (request.user.role === "student") {
+    response.redirect("/student-dashboard");
+  } else if (request.user.role === "teacher") {
+    response.redirect("/teacher-dashboard");
+  } else {
+    response.redirect("/login");
+  }
 })
-
+app.get("/teacher-dashboard",(request,response)=>{
+  response.render("teacher-dashboard", {csrfToken: request.csrfToken()})
+})
+app.get("/student-dashboard",(request,response)=>{
+  response.render("student-dashboard", {csrfToken: request.csrfToken()})
+})
 app.get("/signout",(request,response,next)=>{
   request.logout((err)=>{
     if (err){ return next(err);}
     response.redirect("/");
   })
-});
-
-app.post("/todos",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
-    console.log("Creating a todo",request.body);
-    try{
-    await Todo.addTodo({
-      title: request.body.title, 
-      dueDate: request.body.dueDate , 
-      completed: false, 
-      userId: request.user.id
-    });
-    return response.redirect("/todos");
-    }catch(error){
-        console.error(error);
-        return response.status(422).json(error);
-    }
-});
-app.get("/test-flash", (req, res) => {
-  req.flash("success", "Flash message test!");
-  res.redirect("/todos");
-});
-app.get(
-  "/todos/:id",
-  connectEnsureLogin.ensureLoggedIn(),
-  async function (request, response) {
-    try {
-      const todo = await Todo.findByPk(request.params.id);
-      if (!todo) {
-        return response.status(404).json({ message: "Todo not found" });
-      }
-      return response.json(todo);
-    } catch (error) {
-      console.log(error);
-      return response.status(422).json(error);
-    }
-  },
-);
-app.put(
-  "/todos/:id",
-  connectEnsureLogin.ensureLoggedIn(),
-  async function (request, response) {
-    const todo = await Todo.findByPk(request.params.id);
-    try {
-      const updatedTodo = await todo.setCompletionStatus();
-      return response.json(updatedTodo);
-    } catch (error) {
-      console.log(error);
-      return response.status(422).json(error);
-    }
-  },
-);
-app.delete("/todos/:id",connectEnsureLogin.ensureLoggedIn(), async function (request, response) {
-    console.log("We have to delete a Todo with ID: ", request.params.id);
-    try {
-      const userId = request.user.id;
-      await Todo.remove(request.params.id, userId);
-      return response.json({ success: true });
-    } catch (error) {
-      return response.status(422).json(error);
-    }
 });
 
 module.exports= app;

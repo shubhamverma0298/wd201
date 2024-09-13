@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/>
+    <title>log-in</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function filterCourses() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const courseCards = document.querySelectorAll('.course-card');
+
+            courseCards.forEach(card => {
+                const courseName = card.querySelector('.course-name').textContent.toLowerCase();
+
+                // showing or hide the card based on the search
+                if (searchInput.length > 0 && courseName.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    
+        // Attach the function to the input's "input" event
+        document.getElementById('search').addEventListener('input', filterCourses);
+    </script>
+    </head>
+    <body>
+        <div class="grid grid-cols-4">
+            <div class="col-start-2 col-span-1">
+                <%- include('header.ejs') %>
+                <div class="py-4 flex flex-col">
+                    <div class="py-2 border-b-2 m-2" style="display: flex; justify-content: space-between;">
+                        <h1 class="text-black-600 text-xl font-semibold">Welcome, <br> Educator: <%= currentUser.firstName %> <%= currentUser.lastName %> </h1>
+                        <a href="/signout" class="text-green-600 text-xl font-semibold ">Signout</a>
+                    </div>
+                    <div class="flex flex-row justify-between bg-yellow-100">
+                        <div class="m-2">
+                            <a href="/createcourse" class="bg-green-600 text-white px-5 py-2 rounded font-medium hover:bg-green-700 text-center block">
+                                Create a New Course
+                            </a>
+                        </div>
+                        <div class="m-2">
+                            <a href="/teaMyCourses" class="bg-blue-600 text-white px-5 py-2 rounded font-medium hover:bg-blue-700 text-center block">
+                                My Courses
+                            </a>
+                        </div>
+                        <div class="m-2">
+                            <a href="/view-report" class="bg-purple-600 text-white px-5 py-2 rounded font-medium hover:bg-purple-700 text-center block">
+                                View Report
+                            </a>
+                        </div>
+                    </div>
+                    <hr class="m-2">
+                </div>
+                
+                <div id="courseContainer" class="space-y-4">
+                    <div class="mb-4">
+                        <label for="search" class="text-sm font-bold text-gray-700">Search Courses:</label>
+                        <input type="text" id="search" name="search" class="mt-1 p-1 border border-gray-300 rounded-md">
+                    </div>
+        
+                    <% for (let course of courses) { %>
+                        <a href="/view-course/<%= course.id %>?currentUserId=<%= encodeURIComponent(currentUser.id) %>" class="course-card bg-white border border-gray-300 p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300" style="display: none;">
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="course-name text-xl font-bold">
+                                    <%= course.courseName %>
+                                </h2>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500 hover:text-gray-700 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                            <% for(let user of users) { %>
+                                <% if(user.id === course.userId) { %>
+                                    <p class="text-sm text-gray-600 mb-2">by <%= user.firstName %> <%= user.lastName %></p>
+                                <% } %>
+                            <% } %>
+                        </a>
+                    <% } %>
+                </div>
+    
+                <!-- Display existing courses -->
+                <%- include ('displayCourses.ejs', {currentUser, courses, users}) %>
+    
+                <% if(messages && messages.error && messages.error.length > 0)  { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <p class="bg-red-300 my-4 list-none rounded border-gray-50 px-4 py-2"><%= messages.error[i] %></p>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>
+        
+    
