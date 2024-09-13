@@ -81,12 +81,18 @@ app.use((err, req, res, next) => {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine","ejs");
 
-app.get('/', async (request, response) => {
-      response.render("index", {
-        title: "Todo application",
-        csrfToken: request.csrfToken(),
-      })
-     });
+app.get("/", async (request, response) => {
+  console.log("Authenticated:", request.isAuthenticated());
+  if (request.isAuthenticated()) {
+    response.redirect("/todos");
+  } else {
+    response.render("index", {
+      title: "Todo Application",
+      csrfToken: request.csrfToken(),
+    });
+  }
+});
+
 app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
   const loggedInUser = request.user.id;
   const allTodos = await Todo.getTodos(loggedInUser);
