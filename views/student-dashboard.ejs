@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<%= csrfToken %>"/>
-    <title>log-in</title>
+    <title>student-dashboard</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -39,14 +39,14 @@
                 </div>
                 <div class="border-b-2 m-1">
                     <h1 class="text-xl font-bold text-blue-600 m-1">
-                        🚀Unlock Your Potential: Your Learning Adventure Begins Here!
+                        Unlock Your Potential: Your Learning Adventure Begins Here! with Us.
                     </h1>
                     <p class="text-medium text-gray-700 m-3">
                         Dive into a world of knowledge. Explore our diverse courses and embark on your journey to success.
                     </p>                
                 </div>
                 <div class="p-2 flex flex-row justify-evenly bg-yellow-100">
-                    <a href="/stuMyCourses" class="bg-blue-600 text-white px-5 py-2 rounded font-medium hover:bg-blue-700 text-center block">
+                    <a href="/stuMyCourses" class="bg-blue-900 text-white px-5 py-2 rounded font-medium hover:bg-blue-700 text-center block">
                         My Enrolled Courses
                     </a>
                 </div>
@@ -79,7 +79,7 @@
             </div>
 
             <!-- Display enrolled courses -->
-            <%- include ('displayCourses.ejs', { currentUser, courses, users, enrols }) %>
+            <%- include ('displayCourses.ejs', { currentUserEntry, courses, users, enrols }) %>
 
             <% if(messages && messages.error && messages.error.length > 0)  { %>
                 <% for(var i=0; i<messages.error.length; i++) { %>

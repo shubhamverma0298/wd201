@@ -9,11 +9,10 @@ const bcrypt = require('bcrypt');
 const flash = require("connect-flash");
 const path = require("path");
 
-
 const saltRounds = 10;
 
 const app = express();
-const {User}= require("./models");
+const {UserEntry}= require("./models");
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 const { title } = require("process");
@@ -37,14 +36,14 @@ passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
 }, async (username, password, done) => {
-  const user = User.findOne({
+  const user = UserEntry.findOne({
     where: {
       email: username,
     },
   })
     .then(async (user) => {
       if (!user) {
-        return done(null, false, { message: "User not found" });
+        return done(null, false, { message: "UserEntry not found" });
       }
       const result = await bcrypt.compare(password, user.password);
       if (result) {
@@ -54,6 +53,7 @@ passport.use(new LocalStrategy({
       }
     })
     .catch((error) => {
+      console.log(error);
       return done(error);
     });
 }));
@@ -62,7 +62,7 @@ passport.serializeUser((user, done) =>{
   done(null, user.id)
 })
 passport.deserializeUser((id, done)=>{
-  User.findByPk(id)
+  UserEntry.findByPk(id)
   .then(user =>{
     done(null, user)
   }).catch(error =>{
@@ -82,7 +82,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine","ejs");
 
 app.get("/", async (request, response) => {if (request.isAuthenticated()) {
-  if (request.user.role == "teacher") {
+  if (request.UserEntry.Role == "teacher") {
     return response.redirect("/teacher-dashboard");
   } else {
     return response.redirect("/student-dashboard");
@@ -96,36 +96,41 @@ app.get("/", async (request, response) => {if (request.isAuthenticated()) {
 app.get("/signup",(request,response)=>{
   response.render("signup", {csrfToken: request.csrfToken()})
 })
-app.post("/usersentry", async(request,response)=>{
+app.post("/userentry", async(request,response)=>{
   const hashedPwd =  await bcrypt.hash(request.body.password, saltRounds)
   console.log(hashedPwd)
   try{
     if (request.body.password === "") {
       throw new Error("Validation notEmpty on password failed");
     }
-      const user = await Userentry.create({
-      role: request.body.role,
+      const user = await UserEntry.create({
+
+      Role: request.body.Role,
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
       password: hashedPwd,
     });
     request.login(user, (err) =>{
+      console.log(user.Role);
       if(err){
         console.log(err)
         request.flash("error", "Login Failed");
-      if (user.role === "teacher") {
+      if (user.Role === "teacher") {
+        console.log("/teacher");
         response.redirect("/teacher-dashboard");
-      } else if (user.role === "student") {
+      } else if (user.Role === "student") {
+        console.log("/student");
         response.redirect("/student-dashboard");
       } else {
+        console.log("else");
         request.flash("success", "Signup Success");
         response.redirect("/signup");
       }
     }
     });
   }catch(error){
-    console.error("User creation error:", error);
+    console.error("UserEntry creation error:", error);
     if (error.name === "SequelizeValidationError") {
       const validationErrors = error.errors.map((err) => err.message);
       request.flash("error", validationErrors);
@@ -141,19 +146,21 @@ app.get("/login",async(request,response)=>{
 });
 app.post("/session",passport.authenticate('local',{ failureRedirect:"/login"}), async(request,response)=>{
   console.log(request.user);
-  if (request.user.role === "student") {
+  if (request.UserEntry.Role === "student") {
     response.redirect("/student-dashboard");
-  } else if (request.user.role === "teacher") {
+  } else if (request.UserEntry.Role === "teacher") {
     response.redirect("/teacher-dashboard");
   } else {
     response.redirect("/login");
   }
 })
 app.get("/teacher-dashboard",(request,response)=>{
+  console.log("resaved");
   response.render("teacher-dashboard", {csrfToken: request.csrfToken()})
 })
 app.get("/student-dashboard",(request,response)=>{
-  response.render("student-dashboard", {csrfToken: request.csrfToken()})
+  const currentuser = request.UserEntry;
+  response.render("student-dashboard", {csrfToken: request.csrfToken(),currentuser})
 })
 app.get("/signout",(request,response,next)=>{
   request.logout((err)=>{

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<%= csrfToken %>"/>
-    <title>log-in</title>
+    <title>teacher-dashboard</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -83,7 +83,7 @@
                 </div>
     
                 <!-- Display existing courses -->
-                <%- include ('displayCourses.ejs', {currentUser, courses, users}) %>
+                <%- include ('displayCourses.ejs', {currentUserEntry, courses, users}) %>
     
                 <% if(messages && messages.error && messages.error.length > 0)  { %>
                     <% for(var i=0; i<messages.error.length; i++) { %>
